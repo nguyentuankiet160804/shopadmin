@@ -1,0 +1,99 @@
+/* ═══════════════════════════════════════════════════════
+   login.css — Styles riêng cho trang đăng nhập
+   ═══════════════════════════════════════════════════════ */
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.login-wrap {
+  width: 100%;
+  max-width: 460px;
+}
+
+/* ── LOGO ────────────────────────────────────────────── */
+.logo-area    { text-align: center; margin-bottom: 36px; }
+.logo-brand   { font-family: 'Playfair Display', serif; font-size: 32px; letter-spacing: -.5px; }
+.logo-brand span { color: var(--accent); }
+.logo-tagline { font-size: 13px; color: var(--text3); margin-top: 6px; letter-spacing: .5px; text-transform: uppercase; }
+
+/* ── CARD ────────────────────────────────────────────── */
+.login-card   { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.08), 0 8px 24px rgba(0,0,0,.06); overflow: hidden; }
+
+/* ── TABS ────────────────────────────────────────────── */
+.role-tabs    { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+.role-tab     { padding: 16px; text-align: center; cursor: pointer; font-size: 14px; font-weight: 500; color: var(--text2); transition: all .15s; display: flex; align-items: center; justify-content: center; gap: 8px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.role-tab:hover  { background: var(--surface2); color: var(--text); }
+.role-tab.active { color: var(--accent); border-bottom-color: var(--accent); background: var(--accent-light); }
+.role-tab i   { font-size: 16px; }
+
+/* ── BODY / PANEL ────────────────────────────────────── */
+.login-body { padding: 28px 28px 24px; }
+.panel      { display: none; }
+.panel.active { display: block; }
+
+/* ── HINTS ───────────────────────────────────────────── */
+.role-hint {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 14px; margin-bottom: 22px;
+  font-size: 13px; color: var(--text2); display: flex; align-items: flex-start; gap: 10px;
+}
+.role-hint i          { color: var(--accent); margin-top: 1px; flex-shrink: 0; }
+.role-hint.admin-hint { background: var(--accent-light); border-color: #f0d0b8; }
+.role-hint.customer-hint { background: var(--blue-light); border-color: #c0d4f0; }
+.role-hint.customer-hint i { color: var(--blue); }
+
+/* ── FORM INPUT ──────────────────────────────────────── */
+.form-group { margin-bottom: 16px; }
+label { font-size: 13px; font-weight: 500; color: var(--text2); display: block; margin-bottom: 5px; }
+.input-wrap { position: relative; }
+.input-wrap > i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 14px; pointer-events: none; }
+.input-wrap input { width: 100%; padding: 10px 12px 10px 38px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; color: var(--text); background: var(--surface); font-family: inherit; outline: none; transition: border .15s; }
+.input-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(200,89,10,.1); }
+.eye-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text3); padding: 4px; font-size: 14px; transition: color .1s; }
+.eye-btn:hover { color: var(--text); }
+
+/* ── LOGIN BUTTON ────────────────────────────────────── */
+.btn-login { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 11px 16px; border-radius: 8px; font-size: 14.5px; font-weight: 600; cursor: pointer; transition: all .15s; border: none; font-family: inherit; margin-top: 8px; }
+.btn-login:disabled { opacity: .5; cursor: not-allowed; }
+.btn-login-primary { background: var(--accent); color: #fff; }
+.btn-login-primary:hover:not(:disabled) { background: var(--accent-dark); }
+.btn-login-blue { background: var(--blue); color: #fff; }
+.btn-login-blue:hover:not(:disabled) { background: #154e8a; }
+
+/* ── ERROR MSG ───────────────────────────────────────── */
+.error-msg { background: var(--red-light); border: 1px solid #f5c0c0; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--red); display: none; align-items: center; gap: 8px; margin-bottom: 14px; }
+.error-msg.show { display: flex; }
+.success-msg { background: var(--green-light); border: 1px solid #b8e0c8; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--green); display: none; align-items: center; gap: 8px; margin-bottom: 14px; }
+.success-msg.show { display: flex; }
+
+/* ── DIVIDER ─────────────────────────────────────────── */
+.divider { text-align: center; color: var(--text3); font-size: 12px; margin: 16px 0; position: relative; }
+.divider::before, .divider::after { content: ''; position: absolute; top: 50%; width: 40%; height: 1px; background: var(--border); }
+.divider::before { left: 0; }
+.divider::after  { right: 0; }
+
+/* ── DEMO INFO ───────────────────────────────────────── */
+.demo-accounts { background: var(--surface2); border-radius: 10px; padding: 14px; font-size: 12px; color: var(--text3); }
+.demo-accounts strong { color: var(--text2); display: block; margin-bottom: 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
+.demo-row { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.demo-row:last-child { margin-bottom: 0; }
+.demo-val { font-weight: 600; color: var(--text2); }
+
+/* ── TEXT LINK ───────────────────────────────────────── */
+.text-link { color: var(--accent); cursor: pointer; font-weight: 500; text-decoration: underline; background: none; border: none; font-family: inherit; font-size: inherit; }
+.text-link:hover { color: var(--accent-dark); }
+
+/* ── FOOTER ──────────────────────────────────────────── */
+.login-footer { padding: 16px 28px; border-top: 1px solid var(--border); text-align: center; font-size: 12px; color: var(--text3); }
+.login-footer a { color: var(--accent); text-decoration: none; font-weight: 500; }
+
+/* ── REGISTERED USERS LIST ───────────────────────────── */
+.user-list { list-style: none; max-height: 180px; overflow-y: auto; margin-top: 8px; }
+.user-list li { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-radius: 6px; font-size: 13px; }
+.user-list li:hover { background: var(--surface2); }
+.user-list .u-name { font-weight: 600; color: var(--text); }
+.user-list .u-meta { font-size: 11px; color: var(--text3); }

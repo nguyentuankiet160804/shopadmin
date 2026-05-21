@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopAdmin — Quản trị viên</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="css/shared.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand">Shop<span>Admin</span></div>
+    <div class="tagline">Quản trị viên</div>
+  </div>
+  <div class="sidebar-section">
+    <div class="section-label">Quản lý</div>
+    <div class="nav-item active" data-page="products"     onclick="navigate('products')">
+      <i class="fas fa-box"></i> Quản lý sản phẩm
+    </div>
+    <div class="nav-item"        data-page="orders-admin" onclick="navigate('orders-admin')">
+      <i class="fas fa-clipboard-list"></i> Xem đơn hàng
+    </div>
+  </div>
+  
+  <div class="sidebar-footer">
+    <div class="user-chip">
+      <div class="user-avatar" id="admin-avatar">A</div>
+      <div>
+        <div class="user-name" id="admin-name">Admin</div>
+        <div class="user-role">Quản trị viên</div>
+      </div>
+    </div>
+    <div class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</div>
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toast-msg"></span></div>
+
+<!-- PAGE: PRODUCTS -->
+<div class="page active" id="page-products">
+  <div class="topbar">
+    <div class="topbar-title">Quản lý sản phẩm</div>
+    <div class="topbar-actions">
+      <button class="btn btn-primary" onclick="openAddProduct()"><i class="fas fa-plus"></i> Thêm sản phẩm</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-icon icon-orange"><i class="fas fa-box"></i></div><div class="stat-label">Tổng sản phẩm</div><div class="stat-value" id="stat-total">—</div></div>
+      <div class="stat-card"><div class="stat-icon icon-green"><i class="fas fa-check-circle"></i></div><div class="stat-label">Còn hàng</div><div class="stat-value" id="stat-instock">—</div></div>
+      <div class="stat-card"><div class="stat-icon icon-amber"><i class="fas fa-exclamation-triangle"></i></div><div class="stat-label">Sắp hết hàng</div><div class="stat-value" id="stat-low">—</div></div>
+      <div class="stat-card"><div class="stat-icon icon-blue"><i class="fas fa-tags"></i></div><div class="stat-label">Danh mục</div><div class="stat-value" id="stat-cats">—</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Danh sách sản phẩm</div>
+        <div class="filter-row">
+          <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" id="product-search" placeholder="Tìm sản phẩm..." oninput="renderProductTable()" style="width:220px">
+          </div>
+          <select id="product-cat-filter" onchange="renderProductTable()" style="width:160px">
+            <option value="">Tất cả danh mục</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:40px">#</th>
+              <th>Sản phẩm</th><th>Danh mục</th><th>Giá</th>
+              <th>Tồn kho</th><th>Trạng thái</th><th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="product-table-body">
+            <tr><td colspan="7"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Đang tải từ Firebase...</p></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE: ORDERS ADMIN -->
+<div class="page" id="page-orders-admin">
+  <div class="topbar">
+    <div class="topbar-title">Quản lý đơn hàng</div>
+    <div class="topbar-actions">
+      <select id="order-status-filter" onchange="renderOrderTable()" style="width:160px">
+        <option value="">Tất cả trạng thái</option>
+        <option value="Chờ xử lý">Chờ xử lý</option>
+        <option value="Đang giao">Đang giao</option>
+        <option value="Đã giao">Đã giao</option>
+        <option value="Hủy">Hủy</option>
+      </select>
+    </div>
+  </div>
+  <div class="content">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-icon icon-orange"><i class="fas fa-receipt"></i></div><div class="stat-label">Tổng đơn</div><div class="stat-value" id="o-stat-total">—</div></div>
+      <div class="stat-card"><div class="stat-icon icon-amber"><i class="fas fa-clock"></i></div><div class="stat-label">Chờ xử lý</div><div class="stat-value" id="o-stat-pending">—</div></div>
+      <div class="stat-card"><div class="stat-icon icon-green"><i class="fas fa-check"></i></div><div class="stat-label">Đã giao</div><div class="stat-value" id="o-stat-done">—</div></div>
+      <div class="stat-card"><div class="stat-icon icon-blue"><i class="fas fa-dollar-sign"></i></div><div class="stat-label">Doanh thu</div><div class="stat-value" id="o-stat-rev" style="font-size:18px">—</div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">Danh sách đơn hàng</div></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Mã đơn</th><th>Khách hàng</th><th>Sản phẩm</th>
+              <th>Tổng tiền</th><th>Trạng thái</th><th>Thời gian</th><th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="order-table-body">
+            <tr><td colspan="7"><div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Đang tải đơn hàng...</p></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ADD/EDIT PRODUCT -->
+<div class="modal-backdrop" id="product-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="product-modal-title">Thêm sản phẩm</div>
+      <button class="btn btn-icon btn-secondary" onclick="closeModal('product-modal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-id">
+      <div class="form-row">
+        <div class="form-group"><label>Tên sản phẩm <span style="color:var(--red)">*</span></label><input type="text" id="f-name" placeholder="VD: Áo thun basic"></div>
+        <div class="form-group"><label>SKU / Mã SP</label><input type="text" id="f-sku" placeholder="VD: SP001"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Giá bán (đ) <span style="color:var(--red)">*</span></label><input type="number" id="f-price" placeholder="150000" min="0"></div>
+        <div class="form-group"><label>Tồn kho <span style="color:var(--red)">*</span></label><input type="number" id="f-stock" placeholder="50" min="0"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Danh mục</label>
+          <select id="f-category">
+            <option>Thời trang</option><option>Điện tử</option><option>Thực phẩm</option>
+            <option>Đồ gia dụng</option><option>Mỹ phẩm</option><option>Sách</option>
+            <option>Thể thao</option><option>Khác</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Icon (emoji)</label><input type="text" id="f-icon" placeholder="VD: 👕" maxlength="4"></div>
+      </div>
+      <div class="form-group"><label>Mô tả sản phẩm</label><textarea id="f-desc" placeholder="Mô tả ngắn..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('product-modal')">Hủy</button>
+      <button class="btn btn-primary" id="save-product-btn" onclick="saveProduct()"><i class="fas fa-save"></i> Lưu sản phẩm</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: PRODUCT DETAIL -->
+<div class="modal-backdrop" id="detail-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Chi tiết sản phẩm</div>
+      <button class="btn btn-icon btn-secondary" onclick="closeModal('detail-modal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="detail-modal-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('detail-modal')">Đóng</button>
+      <button class="btn btn-primary" id="detail-edit-btn">Chỉnh sửa</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CONFIRM DELETE -->
+<div class="modal-backdrop" id="confirm-modal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-header">
+      <div class="modal-title">Xác nhận xóa</div>
+      <button class="btn btn-icon btn-secondary" onclick="closeModal('confirm-modal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <p style="color:var(--text2);font-size:14px">
+        Bạn chắc chắn muốn xóa "<strong id="confirm-name"></strong>"? Hành động này sẽ xóa vĩnh viễn khỏi Firebase.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('confirm-modal')">Hủy</button>
+      <button class="btn btn-danger" id="confirm-delete-btn"><i class="fas fa-trash"></i> Xóa vĩnh viễn</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ORDER DETAIL -->
+<div class="modal-backdrop" id="order-detail-modal">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-header">
+      <div class="modal-title" id="order-detail-title">Chi tiết đơn hàng</div>
+      <button class="btn btn-icon btn-secondary" onclick="closeModal('order-detail-modal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="order-detail-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('order-detail-modal')">Đóng</button>
+      <select id="order-status-select" style="width:160px"></select>
+      <button class="btn btn-primary" id="update-status-btn" onclick="updateOrderStatus()"><i class="fas fa-sync-alt"></i> Cập nhật</button>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts: shared first (non-module), then admin (module) -->
+<script src="js/shared.js"></script>
+<script type="module" src="js/admin.js"></script>
+</body>
+</html>

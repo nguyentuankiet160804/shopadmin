@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopAdmin — Cửa hàng</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="css/shared.css">
+<link rel="stylesheet" href="css/shop.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand">Shop<span>Admin</span></div>
+    <div class="tagline">Cửa hàng</div>
+  </div>
+  <div class="sidebar-section">
+    <div class="section-label">Mua sắm</div>
+    <div class="nav-item active" data-page="shop"      onclick="navigate('shop')">
+      <i class="fas fa-store"></i> Đặt hàng
+    </div>
+    <div class="nav-item"        data-page="my-orders" onclick="navigate('my-orders')">
+      <i class="fas fa-receipt"></i> Đơn hàng của tôi
+    </div>
+  </div>
+  <div id="db-status-bar" class="db-status connecting">
+    <div class="db-dot"></div>
+    <span id="db-status-text">Đang kết nối...</span>
+  </div>
+  <div class="sidebar-footer">
+    <div class="user-chip">
+      <div class="user-avatar" id="cust-avatar">K</div>
+      <div>
+        <div class="user-name" id="cust-name">Khách hàng</div>
+        <div class="user-role">Khách hàng</div>
+      </div>
+    </div>
+    <div class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Đăng xuất</div>
+  </div>
+</nav>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toast-msg"></span></div>
+
+<!-- PAGE: SHOP -->
+<div class="page active" id="page-shop">
+  <div class="topbar">
+    <div class="topbar-title">Đặt hàng</div>
+    <div class="topbar-actions">
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" id="shop-search" placeholder="Tìm sản phẩm..." oninput="renderShop()" style="width:220px">
+      </div>
+      <select id="shop-cat-filter" onchange="renderShop()" style="width:150px">
+        <option value="">Tất cả</option>
+      </select>
+      <button class="btn btn-primary" onclick="openCart()">
+        <i class="fas fa-shopping-cart"></i> Giỏ hàng (<span id="cart-count">0</span>)
+      </button>
+    </div>
+  </div>
+  <div class="content" style="padding-bottom:80px">
+    <div id="product-grid" class="product-grid"></div>
+  </div>
+  <div class="cart-bar" id="cart-bar">
+    <div style="font-size:14px">
+      <span id="cart-bar-count" style="font-weight:700;font-size:16px;color:var(--accent)">0</span> sản phẩm trong giỏ
+    </div>
+    <button class="btn btn-primary" onclick="openCart()"><i class="fas fa-shopping-cart"></i> Xem giỏ hàng</button>
+  </div>
+</div>
+
+<!-- PAGE: MY ORDERS -->
+<div class="page" id="page-my-orders">
+  <div class="topbar">
+    <div class="topbar-title">Đơn hàng của tôi</div>
+    <div class="topbar-actions">
+      <select id="my-order-filter" onchange="renderMyOrders()" style="width:170px">
+        <option value="">Tất cả trạng thái</option>
+        <option value="Chờ xử lý">Chờ xử lý</option>
+        <option value="Đang giao">Đang giao</option>
+        <option value="Đã giao">Đã giao</option>
+        <option value="Hủy">Hủy</option>
+      </select>
+    </div>
+  </div>
+  <div class="content">
+    <div id="my-orders-list"></div>
+  </div>
+</div>
+
+<!-- MODAL: CART -->
+<div class="modal-backdrop" id="cart-modal">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-header">
+      <div class="modal-title">Giỏ hàng &amp; Đặt hàng</div>
+      <button class="btn btn-icon btn-secondary" onclick="closeModal('cart-modal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="cart-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('cart-modal')">Tiếp tục mua</button>
+      <button class="btn btn-primary" id="place-order-btn" onclick="placeOrder()"><i class="fas fa-check"></i> Đặt hàng</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: ORDER DETAIL (customer) -->
+<div class="modal-backdrop" id="my-order-detail-modal">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-header">
+      <div class="modal-title" id="my-order-detail-title">Chi tiết đơn hàng</div>
+      <button class="btn btn-icon btn-secondary" onclick="closeModal('my-order-detail-modal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="my-order-detail-body"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal('my-order-detail-modal')">Đóng</button>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts: shared first (non-module), then shop (module) -->
+<script src="js/shared.js"></script>
+<script type="module" src="js/shop.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+/* ═══════════════════════════════════════════════════════
+   admin.css — Styles riêng cho trang quản trị
+   ═══════════════════════════════════════════════════════ */
+
+body { 
+  display: flex; 
+  margin: 0; 
+  padding: 0;
+}
+
+/* Admin avatar màu accent */
+.user-avatar { background: var(--accent); }

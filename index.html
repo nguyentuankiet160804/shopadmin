@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopAdmin — Đăng nhập</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="css/shared.css">
+<link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+<div class="login-wrap">
+  <!-- Logo -->
+  <div class="logo-area">
+    <div class="logo-brand">Shop<span>Admin</span></div>
+    <div class="logo-tagline">Hệ thống quản lý cửa hàng</div>
+  </div>
+
+  <div class="login-card">
+    <!-- Role tabs -->
+    <div class="role-tabs">
+      <div class="role-tab active" id="tab-admin" onclick="switchRole('admin')">
+        <i class="fas fa-user-shield"></i> Quản trị viên
+      </div>
+      <div class="role-tab" id="tab-customer" onclick="switchRole('customer')">
+        <i class="fas fa-user"></i> Khách hàng
+      </div>
+    </div>
+
+    <div class="login-body">
+
+      <!-- ══ ADMIN PANEL ════════════════════════════════════ -->
+      <div class="panel active" id="panel-admin">
+        <div class="role-hint admin-hint">
+          <i class="fas fa-info-circle"></i>
+          <span>Đăng nhập với tài khoản <strong>Admin</strong> để quản lý sản phẩm và đơn hàng.</span>
+        </div>
+        <div class="error-msg" id="admin-error"><i class="fas fa-exclamation-circle"></i><span id="admin-error-msg"></span></div>
+
+        <div class="form-group">
+          <label>Tên đăng nhập</label>
+          <div class="input-wrap">
+            <i class="fas fa-user"></i>
+            <input type="text" id="admin-username" placeholder="admin" autocomplete="username">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Mật khẩu</label>
+          <div class="input-wrap">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="admin-password" placeholder="••••••••" autocomplete="current-password">
+            <button class="eye-btn" type="button" onclick="togglePwd('admin-password',this)"><i class="fas fa-eye"></i></button>
+          </div>
+        </div>
+        <button class="btn-login btn-login-primary" id="admin-btn" onclick="loginAdmin()">
+          <i class="fas fa-sign-in-alt"></i> Đăng nhập Admin
+        </button>
+
+        <div class="divider">Tài khoản demo</div>
+        <div class="demo-accounts">
+          <strong>Thông tin đăng nhập mẫu</strong>
+          <div class="demo-row"><span>Tên đăng nhập:</span><span class="demo-val">admin</span></div>
+          <div class="demo-row"><span>Mật khẩu:</span><span class="demo-val">admin123</span></div>
+        </div>
+      </div>
+
+      <!-- ══ CUSTOMER PANEL ═════════════════════════════════ -->
+      <div class="panel" id="panel-customer">
+        <!-- Sub-tab: Đăng nhập / Đăng ký / Khách -->
+        <div style="display:flex;gap:0;margin-bottom:20px;border:1px solid var(--border);border-radius:8px;overflow:hidden">
+          <button id="subtab-login"    class="sub-tab" onclick="switchCustomerView('login')"
+            style="flex:1;padding:9px 6px;font-size:13px;font-weight:500;background:var(--accent);color:#fff;border:none;cursor:pointer;font-family:inherit">
+            <i class="fas fa-sign-in-alt"></i> Đăng nhập
+          </button>
+          <button id="subtab-register" class="sub-tab" onclick="switchCustomerView('register')"
+            style="flex:1;padding:9px 6px;font-size:13px;font-weight:500;background:var(--surface2);color:var(--text2);border:none;border-left:1px solid var(--border);cursor:pointer;font-family:inherit">
+            <i class="fas fa-user-plus"></i> Đăng ký
+          </button>
+          <button id="subtab-guest"    class="sub-tab" onclick="switchCustomerView('guest')"
+            style="flex:1;padding:9px 6px;font-size:13px;font-weight:500;background:var(--surface2);color:var(--text2);border:none;border-left:1px solid var(--border);cursor:pointer;font-family:inherit">
+            <i class="fas fa-bolt"></i> Vào nhanh
+          </button>
+        </div>
+
+        <!-- ── Sub-panel: Login ────────────────────────────── -->
+        <div class="sub-panel active" id="subpanel-login">
+          <div class="role-hint customer-hint">
+            <i class="fas fa-info-circle"></i>
+            <span>Đăng nhập bằng tài khoản đã đăng ký để xem lịch sử đơn hàng.</span>
+          </div>
+          <div class="error-msg" id="cust-login-error"><i class="fas fa-exclamation-circle"></i><span id="cust-login-error-msg"></span></div>
+
+          <div class="form-group">
+            <label>Tên đăng nhập</label>
+            <div class="input-wrap">
+              <i class="fas fa-user"></i>
+              <input type="text" id="cust-login-username" placeholder="VD: nguyenvana" autocomplete="username">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Mật khẩu</label>
+            <div class="input-wrap">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="cust-login-password" placeholder="••••••••" autocomplete="current-password">
+              <button class="eye-btn" type="button" onclick="togglePwd('cust-login-password',this)"><i class="fas fa-eye"></i></button>
+            </div>
+          </div>
+          <button class="btn-login btn-login-blue" id="cust-login-btn" onclick="loginCustomer()">
+            <i class="fas fa-store"></i> Đăng nhập
+          </button>
+          <p style="margin-top:14px;font-size:13px;color:var(--text3);text-align:center">
+            Chưa có tài khoản?
+            <button class="text-link" onclick="switchCustomerView('register')">Đăng ký ngay</button>
+          </p>
+        </div>
+
+        <!-- ── Sub-panel: Register ─────────────────────────── -->
+        <div class="sub-panel" id="subpanel-register" style="display:none">
+          <div class="role-hint customer-hint">
+            <i class="fas fa-user-plus"></i>
+            <span>Tạo tài khoản để lưu lịch sử đơn hàng và đăng nhập lại dễ dàng.</span>
+          </div>
+          <div class="error-msg"   id="register-error"  ><i class="fas fa-exclamation-circle"></i><span id="register-error-msg"></span></div>
+          <div class="success-msg" id="register-success"><i class="fas fa-check-circle"></i><span id="register-success-msg"></span></div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Họ tên <span style="color:var(--red)">*</span></label>
+              <div class="input-wrap">
+                <i class="fas fa-id-card"></i>
+                <input type="text" id="reg-name" placeholder="Nguyễn Văn A" autocomplete="name">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Tên đăng nhập <span style="color:var(--red)">*</span></label>
+              <div class="input-wrap">
+                <i class="fas fa-user"></i>
+                <input type="text" id="reg-username" placeholder="nguyenvana" autocomplete="username">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Số điện thoại</label>
+            <div class="input-wrap">
+              <i class="fas fa-phone"></i>
+              <input type="text" id="reg-phone" placeholder="09xxxxxxxx" autocomplete="tel">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Mật khẩu <span style="color:var(--red)">*</span></label>
+              <div class="input-wrap">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="reg-password" placeholder="Tối thiểu 6 ký tự">
+                <button class="eye-btn" type="button" onclick="togglePwd('reg-password',this)"><i class="fas fa-eye"></i></button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Xác nhận mật khẩu <span style="color:var(--red)">*</span></label>
+              <div class="input-wrap">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="reg-password2" placeholder="Nhập lại mật khẩu">
+                <button class="eye-btn" type="button" onclick="togglePwd('reg-password2',this)"><i class="fas fa-eye"></i></button>
+              </div>
+            </div>
+          </div>
+          <button class="btn-login btn-login-primary" id="register-btn" onclick="registerAccount()">
+            <i class="fas fa-user-plus"></i> Tạo tài khoản
+          </button>
+          <p style="margin-top:14px;font-size:13px;color:var(--text3);text-align:center">
+            Đã có tài khoản?
+            <button class="text-link" onclick="switchCustomerView('login')">Đăng nhập</button>
+          </p>
+        </div>
+
+        <!-- ── Sub-panel: Guest ────────────────────────────── -->
+        <div class="sub-panel" id="subpanel-guest" style="display:none">
+          <div class="role-hint customer-hint">
+            <i class="fas fa-bolt"></i>
+            <span>Nhập tên để mua sắm ngay — không cần tạo tài khoản!</span>
+          </div>
+          <div class="error-msg" id="guest-error"><i class="fas fa-exclamation-circle"></i><span id="guest-error-msg"></span></div>
+
+          <div class="form-group">
+            <label>Họ tên <span style="color:var(--red)">*</span></label>
+            <div class="input-wrap">
+              <i class="fas fa-user"></i>
+              <input type="text" id="guest-name" placeholder="VD: Nguyễn Văn A" autocomplete="name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Số điện thoại (tùy chọn)</label>
+            <div class="input-wrap">
+              <i class="fas fa-phone"></i>
+              <input type="text" id="guest-phone" placeholder="VD: 09xxxxxxxx" autocomplete="tel">
+            </div>
+          </div>
+          <button class="btn-login btn-login-blue" id="guest-btn" onclick="loginGuest()">
+            <i class="fas fa-store"></i> Vào trang mua sắm
+          </button>
+        </div>
+
+      </div><!-- end panel-customer -->
+    </div><!-- end login-body -->
+
+    <div class="login-footer">
+      ShopAdmin &copy; 2025 &mdash; <a href="#">Điều khoản sử dụng</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/login.js"></script>
+
+<script>
+  // Sub-tab active style sync
+  const _origSwitchCustomerView = window.switchCustomerView;
+  window.switchCustomerView = function(view) {
+    // Reset all sub-tab styles
+    ['login','register','guest'].forEach(v => {
+      const btn = document.getElementById('subtab-' + v);
+      if (btn) {
+        btn.style.background = (v === view) ? 'var(--accent)' : 'var(--surface2)';
+        btn.style.color      = (v === view) ? '#fff' : 'var(--text2)';
+      }
+      const panel = document.getElementById('subpanel-' + v);
+      if (panel) panel.style.display = (v === view) ? 'block' : 'none';
+    });
+  };
+  // Init default
+  window.switchCustomerView('login');
+</script>
+</body>
+</html>
